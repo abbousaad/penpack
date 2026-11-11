@@ -162,6 +162,62 @@ web UI (`8080`) to the host.
 
 ---
 
+## Per-engagement isolation
+
+Run a **named engagement** with its own isolated data volume and BloodHound
+database. Each engagement lives under `engagements/<name>/data` (mounted at
+`/data` inside the container), and its BloodHound Postgres + Neo4j volumes are
+isolated via the Docker Compose project name.
+
+```bash
+# start a new engagement (creates engagements/<name>/data)
+./engage.sh mykalis-2026-11
+
+# work inside it
+docker compose -p mykalis-2026-11 exec pentest bash
+docker compose -p mykalis-2026-11 run --rm pentest nmap -A -p- 10.8.0.100
+# BloodHound UI: http://localhost:8080/ui/login
+
+# stop it (data volume is kept)
+docker compose -p mykalis-2026-11 down
+```
+
+Run several engagements at once by giving each a different BloodHound port:
+
+```bash
+./engage.sh client-a 8080
+./engage.sh client-b 8081
+```
+
+### Encrypt an engagement when it's done
+
+Archive + encrypt the engagement's data directory (AES-256, passphrase):
+
+```bash
+./encrypt.sh mykalis-2026-11                 # -> engagements/mykalis-2026-11.tar.gz.gpg
+# then wipe the plaintext data dir if you like
+rm -rf engagements/mykalis-2026-11/data
+```
+
+Non-interactive (for scripting/CI) or asymmetric (to a GPG key):
+
+```bash
+GPG_PASSPHRASE='your-secret' ./encrypt.sh mykalis-2026-11
+GPG_RECIPIENT=you@example.com ./encrypt.sh mykalis-2026-11
+```
+
+Restore later:
+
+```bash
+./decrypt.sh engagements/mykalis-2026-11.tar.gz.gpg engagements/mykalis-2026-11
+```
+
+> The encrypted archive contains the `data/` directory only (scans, hashes,
+> certs, BloodHound collection zips). The BloodHound graph itself is re-derivable
+> by re-importing those zips into the UI.
+
+---
+
 ## Worked example — mykalis.dojo
 
 The exact workflow this image was built for:

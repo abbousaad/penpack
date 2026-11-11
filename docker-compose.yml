@@ -85,12 +85,12 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ad-pentest:latest
-    container_name: pentest
     network_mode: host
     hostname: pentest
     working_dir: /data
     volumes:
-      - ./data:/data
+      # per-engagement data directory (override with DATA_DIR)
+      - ${DATA_DIR:-./data}:/data
     stdin_open: true
     tty: true
     command: ["sleep", "infinity"]

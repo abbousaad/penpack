@@ -5,6 +5,13 @@
 data/*
 !data/.gitkeep
 
+# Per-engagement data (isolated volumes)
+engagements/
+
+# Encrypted engagement archives
+*.gpg
+*.tar.gz
+
 # Python
 __pycache__/
 *.pyc
