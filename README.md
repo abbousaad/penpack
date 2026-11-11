@@ -28,6 +28,9 @@ docker compose up -d --build
 
 # 4. Drop into the pentest shell
 docker compose exec pentest bash
+
+# 5. Verify all tools are installed
+docker compose exec pentest check-tools
 ```
 
 That's it. BloodHound is now running in the background and reachable at:
@@ -87,6 +90,18 @@ Default database credentials (internal, for local lab use only):
 
 `crackmapexec` is intentionally **not** installed — it is deprecated and
 superseded by `netexec` (`nxc`), which is drop-in compatible.
+
+### Tool status checker
+
+The image ships a `check-tools` script that verifies every tool is present and
+prints a version/status line for each:
+
+```bash
+docker compose exec pentest check-tools
+```
+
+It exits non-zero if anything is missing, so it can also be used as a
+post-build sanity check in CI.
 
 ---
 

@@ -77,6 +77,12 @@ RUN wget -q "https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrut
         -O /usr/local/bin/kerbrute \
     && chmod +x /usr/local/bin/kerbrute
 
+# -----------------------------------------------------------------------------
+# tool-status checker
+# -----------------------------------------------------------------------------
+COPY check-tools.sh /usr/local/bin/check-tools
+RUN chmod +x /usr/local/bin/check-tools
+
 WORKDIR /data
 
 # The container is used interactively via `docker compose exec pentest bash`.
