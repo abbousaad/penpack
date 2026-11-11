@@ -1,0 +1,16 @@
+# Local environment (may contain secrets)
+.env
+
+# Tool output / collected data
+data/*
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
