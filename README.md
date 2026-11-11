@@ -17,8 +17,8 @@ graph database + web UI come up automatically and stay accessible.
 
 ```bash
 # 1. Clone
-git clone https://github.com/<your-user>/ad-pentest-docker.git
-cd ad-pentest-docker
+git clone https://github.com/<your-user>/penpack.git
+cd penpack
 
 # 2. (optional) customize
 cp .env.example .env
