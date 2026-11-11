@@ -103,6 +103,50 @@ docker compose exec pentest check-tools
 It exits non-zero if anything is missing, so it can also be used as a
 post-build sanity check in CI.
 
+### Running tools without starting the container
+
+You don't have to keep a shell open. Every tool can be run one-off in a
+throwaway container (it still gets host networking and the `./data` mount, then
+is removed when it exits):
+
+```bash
+docker compose run --rm pentest <tool> [args]
+```
+
+> Put wordlists/inputs in `./data` on the host — they are available as `/data/...`
+> inside the container. Add `-T` to the run command when you don't need a TTY
+> (e.g. inside scripts/pipes).
+
+| Tool | One-off example |
+|------|-----------------|
+| nxc / netexec | `docker compose run --rm pentest nxc smb 10.8.0.100 -u user -p pass` |
+| certipy | `docker compose run --rm pentest certipy find -u user@dom -p pass -dc-ip 10.8.0.100` |
+| bloodyAD | `docker compose run --rm pentest bloodyAD --host 10.8.0.100 -d dom -u user -p pass set password victim 'Pw!'` |
+| kerbrute | `docker compose run --rm pentest kerbrute bruteuser -d DOM --dc 10.8.0.100 /data/rockyou.txt user` |
+| bloodhound-ce-python | `docker compose run --rm pentest bloodhound-ce-python -u user -p pass -d dom -ns 10.8.0.100 -c All --zip` |
+| secretsdump.py | `docker compose run --rm pentest secretsdump.py dom/user:pass@10.8.0.100` |
+| GetNPUsers.py | `docker compose run --rm pentest GetNPUsers.py dom/ -dc-ip 10.8.0.100 -usersfile /data/users.txt` |
+| mssqlclient.py | `docker compose run --rm pentest mssqlclient.py dom/user:pass@10.8.0.100` |
+| psexec.py | `docker compose run --rm pentest psexec.py dom/user:pass@10.8.0.100` |
+| smbclient.py | `docker compose run --rm pentest smbclient.py dom/user:pass@10.8.0.100` |
+| wmiexec.py | `docker compose run --rm pentest wmiexec.py dom/user:pass@10.8.0.100` |
+| rpcclient | `docker compose run --rm pentest rpcclient -U 'user%pass' 10.8.0.100` |
+| smbclient | `docker compose run --rm pentest smbclient -L //10.8.0.100 -U user` |
+| ldapsearch | `docker compose run --rm pentest ldapsearch -H ldap://10.8.0.100 -x -b 'DC=dom,DC=local'` |
+| nmap | `docker compose run --rm pentest nmap -A -p- 10.8.0.100` |
+| ffuf | `docker compose run --rm pentest ffuf -u https://target/FUZZ -w /data/wordlist.txt` |
+| gobuster | `docker compose run --rm pentest gobuster dir -u https://target -w /data/wordlist.txt -k` |
+| rdesktop | `docker compose run --rm pentest rdesktop -u user -p pass 10.8.0.100` |
+| xfreerdp | `docker compose run --rm pentest xfreerdp /v:10.8.0.100 /u:user /p:pass /cert:ignore` |
+| socat | `docker compose run --rm pentest socat TCP-LISTEN:8080,fork TCP:target:80` |
+| proxychains4 | `docker compose run --rm pentest proxychains4 nmap -sT -Pn target` |
+| openssl | `docker compose run --rm pentest openssl s_client -connect target:443` |
+| sshpass | `docker compose run --rm pentest sshpass -p pass ssh user@target` |
+| check-tools | `docker compose run --rm pentest check-tools` |
+
+> **GUI tools** (`rdesktop`, `xfreerdp`) need an X display. From a Linux host
+> with `DISPLAY` set, forward it with `docker compose run --rm -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix pentest rdesktop ...`.
+
 ---
 
 ## Network model
