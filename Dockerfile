@@ -45,6 +45,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         # web fuzzing (OWA / vhost discovery)
         ffuf \
         gobuster \
+        # cracking
+        hashcat \
+        hydra \
         # pivoting / tunneling
         socat \
         proxychains4 \

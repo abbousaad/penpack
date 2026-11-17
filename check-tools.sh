@@ -69,6 +69,11 @@ echo "[ Credential capture / poisoning ]"
 check responder
 
 echo
+echo "[ Cracking ]"
+check hashcat   "hashcat --version 2>&1"
+check hydra     "hydra -h 2>&1 | grep -iE 'hydra v[0-9]+' | head -1"
+
+echo
 echo "[ Recon / web fuzzing ]"
 check nmap      "nmap --version 2>&1"
 check ffuf      "ffuf -V 2>&1"

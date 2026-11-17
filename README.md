@@ -86,6 +86,8 @@ Default database credentials (internal, for local lab use only):
 | ldapsearch                  | Raw LDAP queries                         | `ldapsearch`              |
 | nmap                        | Port / service discovery                 | `nmap`                    |
 | ffuf / gobuster             | Web directory & vhost fuzzing            | `ffuf`, `gobuster`        |
+| hashcat                     | Offline password cracking                | `hashcat`                 |
+| hydra                       | Network login brute-forcing              | `hydra`                   |
 | rdesktop / xfreerdp         | RDP clients (GUI / jump boxes)           | `rdesktop`, `xfreerdp`    |
 | socat / proxychains4 / ssh  | Pivoting & tunneling                      | `socat`, `proxychains4`   |
 
