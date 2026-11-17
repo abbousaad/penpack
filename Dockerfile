@@ -94,6 +94,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends golang-go \
 # Responder (LLMNR/NBT-NS/mDNS poisoning) — not in Ubuntu repos, install from git
 # -----------------------------------------------------------------------------
 RUN git clone --depth 1 https://github.com/lgandx/Responder.git /opt/Responder \
+    && python3 -m pip install --no-cache-dir aioquic \
     && printf '#!/bin/sh\nexec python3 /opt/Responder/Responder.py "$@"\n' > /usr/local/bin/responder \
     && chmod +x /usr/local/bin/responder
 
