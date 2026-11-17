@@ -42,8 +42,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         smbclient \
         samba-common-bin \
         krb5-user \
-        # credential capture / name-resolution poisoning
-        responder \
         # web fuzzing (OWA / vhost discovery)
         ffuf \
         gobuster \
@@ -81,6 +79,13 @@ RUN python3 -m pip install --no-cache-dir pipx \
 RUN wget -q "https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64" \
         -O /usr/local/bin/kerbrute \
     && chmod +x /usr/local/bin/kerbrute
+
+# -----------------------------------------------------------------------------
+# Responder (LLMNR/NBT-NS/mDNS poisoning) — not in Ubuntu repos, install from git
+# -----------------------------------------------------------------------------
+RUN git clone --depth 1 https://github.com/lgandx/Responder.git /opt/Responder \
+    && printf '#!/bin/sh\nexec python3 /opt/Responder/Responder.py "$@"\n' > /usr/local/bin/responder \
+    && chmod +x /usr/local/bin/responder
 
 # -----------------------------------------------------------------------------
 # tool-status checker
