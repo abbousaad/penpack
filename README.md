@@ -81,6 +81,7 @@ Default database credentials (internal, for local lab use only):
 | Certipy                     | AD CS enumeration & ESC abuse            | `certipy`                 |
 | Impacket                    | `secretsdump.py`, `mssqlclient.py`, etc. | `*.py` scripts            |
 | kerbrute                    | Kerberos brute-forcing                   | `kerbrute`                |
+| Responder                   | LLMNR/NBT-NS/mDNS poisoning & NTLM capture | `responder`             |
 | rpcclient / smbclient       | SAMR RPC + SMB client                    | `rpcclient`, `smbclient`  |
 | ldapsearch                  | Raw LDAP queries                         | `ldapsearch`              |
 | nmap                        | Port / service discovery                 | `nmap`                    |

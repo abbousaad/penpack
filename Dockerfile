@@ -39,6 +39,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         smbclient \
         samba-common-bin \
         krb5-user \
+        # credential capture / name-resolution poisoning
+        responder \
         # web fuzzing (OWA / vhost discovery)
         ffuf \
         gobuster \

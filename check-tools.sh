@@ -65,6 +65,10 @@ check smbclient  "smbclient --version 2>&1"
 check ldapsearch "ldapsearch -VV 2>&1"
 
 echo
+echo "[ Credential capture / poisoning ]"
+check responder
+
+echo
 echo "[ Recon / web fuzzing ]"
 check nmap      "nmap --version 2>&1"
 check ffuf      "ffuf -V 2>&1"
