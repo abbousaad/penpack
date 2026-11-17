@@ -19,8 +19,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libssl-dev \
         libffi-dev \
         libkrb5-dev \
-        # Rust toolchain (required to build NetExec's aardwolf dependency)
-        cargo \
         pkg-config \
         # base tooling
         ca-certificates \
@@ -59,6 +57,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         iputils-ping \
         vim \
     && rm -rf /var/lib/apt/lists/*
+
+# -----------------------------------------------------------------------------
+# Rust toolchain — install latest via rustup. Ubuntu's apt cargo (1.75) is too
+# old to parse aardwolf's Cargo.lock; NetExec needs a newer Rust to build it.
+# -----------------------------------------------------------------------------
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # -----------------------------------------------------------------------------
 # Python-based AD tooling (each in its own isolated venv via pipx, so their
