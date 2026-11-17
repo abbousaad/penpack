@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libssl-dev \
         libffi-dev \
         libkrb5-dev \
+        # Rust toolchain (required to build NetExec's aardwolf dependency)
+        cargo \
+        pkg-config \
         # base tooling
         ca-certificates \
         curl \
