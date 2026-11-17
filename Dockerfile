@@ -40,6 +40,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         smbclient \
         samba-common-bin \
         krb5-user \
+        # Responder dependency (network interface enumeration)
+        python3-netifaces \
         # web fuzzing (OWA / vhost discovery)
         ffuf \
         gobuster \
