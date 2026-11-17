@@ -74,11 +74,14 @@ RUN python3 -m pip install --no-cache-dir pipx \
     && pipx install --pip-args="--no-cache-dir" git+https://github.com/Pennyw0rth/NetExec
 
 # -----------------------------------------------------------------------------
-# kerbrute (Go binary — faster kerberos brute-forcing)
+# kerbrute (build from source — arch-agnostic: amd64 + arm64/Apple Silicon)
 # -----------------------------------------------------------------------------
-RUN wget -q "https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64" \
-        -O /usr/local/bin/kerbrute \
-    && chmod +x /usr/local/bin/kerbrute
+RUN apt-get update && apt-get install -y --no-install-recommends golang-go \
+    && git clone --depth 1 --branch v1.0.3 https://github.com/ropnop/kerbrute.git /opt/kerbrute-src \
+    && cd /opt/kerbrute-src && CGO_ENABLED=0 go build -o /usr/local/bin/kerbrute . \
+    && rm -rf /opt/kerbrute-src /root/.cache /root/go \
+    && apt-get purge -y --auto-remove golang-go \
+    && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------------------------------------------------------
 # Responder (LLMNR/NBT-NS/mDNS poisoning) — not in Ubuntu repos, install from git
